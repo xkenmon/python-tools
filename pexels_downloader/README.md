@@ -4,7 +4,7 @@
 
 ### Usage
 
-	usage: pexels_download.py [-h] [-p PATH] [-c COUNT] [-s SEARCH]
+    usage: pexels_download.py [-h] [-p PATH] [-c COUNT] [-s SEARCH]
 
     This tool can help you download any photo you like from pexels.com
 	
@@ -16,4 +16,6 @@
 	  -s SEARCH, --search SEARCH
 	                        指定搜索关键字
 
-### See also : [bg-generator]("https://github.com/xkenmon/go-tools/tree/master/bg-generate")
+### See also
+
+   Linux Gnome wallpaper auto switcher: [bg-generator](https://github.com/xkenmon/go-tools/tree/master/bg-generate)
