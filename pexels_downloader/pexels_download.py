@@ -14,13 +14,15 @@ end_flag = b'<\\/article>'
 start_flag = b'<article'
 
 
-def download(store_dir, page_count, keyword):
+def download(store_dir, page_count, keyword, resolution):
     link_list = get_pic_url(page_count, keyword)
     print('start download...')
     for link in link_list:
-        pic = requests.get(link)
         parse_result = urllib.parse.urlparse(link)
         filename = urllib.parse.parse_qs(parse_result.query)['dl'][0]
+        link = parse_result.geturl()+"?dl&fit=crop&crop=entropy&w=" + \
+            resolution.split('x')[0] + "&h=" + resolution.split('x')[1]
+        pic = requests.get(link)
         file_path = os.path.normpath(store_dir + '/' + filename)
         f = open(file_path, 'wb+', buffering=1)
         f.write(pic.content)
@@ -47,7 +49,9 @@ def get_pic_url(page_count, keyword):
     if keyword.strip() == "":
         base_url = index_url
     download_url = base_url + urllib.parse.quote_plus(keyword)
+    linkList = []
     for page in range(page_count):
+        print('get page ', page)
         payload = {'format': 'js',
                    'seed': time.strftime('%Y-%m-%d %H:%M:%S 0000', time.localtime()),
                    'page': page
@@ -59,21 +63,29 @@ def get_pic_url(page_count, keyword):
         content = content[start_idx: end_idx]
         parser = PexelsRespHTMLParser()
         parser.feed(str(content))
-        return parser.linkList
+        linkList.extend(parser.linkList)
+    return linkList
 
 
 def main():
-    parser = argparse.ArgumentParser(description="download pictures form pexels.com")
-    parser.add_argument('-p', '--path', help='指定存储路径,默认为当前工作路径', default=".", type=str)
-    parser.add_argument('-c', '--count', help='指定下载总页数(每页15)', default=1, type=int)
-    parser.add_argument('-s', '--search', help='指定搜索关键字,为空从首页下载', default='', type=str)
+    parser = argparse.ArgumentParser(
+        description="download pictures form pexels.com")
+    parser.add_argument(
+        '-p', '--path', help='指定存储路径,默认为当前工作路径', default=".", type=str)
+    parser.add_argument(
+        '-c', '--count', help='指定下载总页数(每页15)', default=1, type=int)
+    parser.add_argument(
+        '-s', '--search', help='指定搜索关键字,为空从首页下载', default='', type=str)
+    parser.add_argument(
+        '-r', '--resolution', help='指定分辨率', default='1920x1080', type=str)
     args = parser.parse_args()
 
     path_name = args.path
     count = args.count
     keyword = args.search
+    resolution = args.resolution
 
-    download(path_name, count, keyword)
+    download(path_name, count, keyword, resolution)
 
 
 if __name__ == '__main__':

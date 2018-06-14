@@ -4,9 +4,10 @@
 
 ### Usage
 
-    usage: pexels_download.py [-h] [-p PATH] [-c COUNT] [-s SEARCH]
-
-    This tool can help you download any photo you like from pexels.com
+	usage: pexels_download.py [-h] [-p PATH] [-c COUNT] [-s SEARCH]
+	                          [-r RESOLUTION]
+	
+	download pictures form pexels.com
 	
 	optional arguments:
 	  -h, --help            show this help message and exit
@@ -14,7 +15,9 @@
 	  -c COUNT, --count COUNT
 	                        指定下载总页数(每页15)
 	  -s SEARCH, --search SEARCH
-	                        指定搜索关键字
+	                        指定搜索关键字,为空从首页下载
+	  -r RESOLUTION, --resolution RESOLUTION
+	                        指定分辨率
 
 ### See also
 
